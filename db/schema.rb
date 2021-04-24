@@ -132,6 +132,7 @@ ActiveRecord::Schema.define(version: 2021_05_08_091206) do
     t.check_constraint "(vaccine_type)::text = ANY ((ARRAY['pfizer'::character varying, 'moderna'::character varying, 'astrazeneca'::character varying, 'janssen'::character varying])::text[])", name: "vaccine_type_is_a_known_brand"
     t.check_constraint "max_distance_in_meters > 0", name: "max_distance_in_meters_gt_zero"
     t.check_constraint "min_age > 0", name: "min_age_gt_zero"
+    t.check_constraint "sms_sent_count <= sms_max_count", name: "sms_sent_count_lt_eq_sms_max_count"
     t.check_constraint "starts_at < ends_at", name: "starts_at_lt_ends_at"
   end
 
@@ -234,6 +235,21 @@ ActiveRecord::Schema.define(version: 2021_05_08_091206) do
     t.datetime "updated_at", precision: 6, null: false
     t.index ["name", "resource_type", "resource_id"], name: "index_roles_on_name_and_resource_type_and_resource_id"
     t.index ["resource_type", "resource_id"], name: "index_roles_on_resource"
+  end
+
+  create_table "seo_pages", force: :cascade do |t|
+    t.string "status"
+    t.string "slug"
+    t.string "title", null: false
+    t.boolean "indexable", default: false, null: false
+    t.boolean "crawlable", default: false, null: false
+    t.string "seo_title"
+    t.string "seo_description"
+    t.text "body"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["slug"], name: "index_seo_pages_on_slug", unique: true
+    t.check_constraint "(status)::text = ANY ((ARRAY['draft'::character varying, 'review'::character varying, 'ready'::character varying, 'online'::character varying, 'archive'::character varying])::text[])", name: "status_is_a_known_status"
   end
 
   create_table "users", force: :cascade do |t|

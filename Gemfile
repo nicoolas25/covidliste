@@ -67,6 +67,7 @@ gem "react_on_rails", "12.2.0"
 gem "mini_racer", platforms: :ruby
 gem "marginalia"
 gem "memoist"
+gem "rails-i18n"
 
 group :development, :test do
   gem "dotenv-rails", "2.7.6"

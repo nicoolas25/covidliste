@@ -37,6 +37,11 @@ Rails.application.routes.draw do
         end
       end
 
+      authenticate :user, lambda { |u| u.has_role?(:marketing_lead) || u.has_role?(:marketing_member) } do
+        # Marketing editor
+        resources :seo_pages, path: "blog", except: [:show]
+      end
+
       authenticate :user, lambda { |u| u.has_role?(:ds_admin) } do
         # DataScience admin
         mount Blazer::Engine, at: "/blazer"
@@ -61,6 +66,9 @@ Rails.application.routes.draw do
   end
 
   mount LetterOpenerWeb::Engine, at: "/letter_opener" if Rails.env.development?
+
+  ## SEO Pages
+  resources :seo_pages, only: [:show], path: "blog"
 
   ## devise users
   devise_for :users,
