@@ -61,7 +61,6 @@ Rails.application.routes.draw do
   ## devise users
   devise_for :users,
     path_names: {sign_in: "login", sign_out: "logout"},
-    path: "",
     skip: %i[registrations],
     controllers: {
       sessions: "devise/passwordless/sessions",
@@ -73,21 +72,31 @@ Rails.application.routes.draw do
     get "/users/magic_link", to: "devise/passwordless/magic_links#show", as: "users_magic_link"
   end
 
+  # Handle old routes redirections (before devise users path migration)
+  get "/login", to: redirect("/users/login", status: 302), as: :legacy_new_user_session
+  post "/login", to: redirect("/users/login", status: 302), as: :legacy_user_session
+  delete "/logout", to: redirect("/users/logout", status: 302), as: :legacy_destroy_user_session
+  get "/profile", to: redirect("/users/profile", status: 302), as: :legacy_profile
+  get "/confirmation/new", to: redirect("/users/confirmation/new", status: 302), as: :legacy_new_user_confirmation
+  get "/confirmation", to: redirect("/users/confirmation", status: 302), as: :legacy_user_confirmation
+  post "/confirmation", to: redirect("/users/confirmation", status: 302)
+
   ## devise partners
   devise_for :partners,
     path_names: {sign_in: "login", sign_out: "logout"},
     skip: %i[registrations],
     controllers: {
-      confirmations: "confirmations"
+      confirmations: "confirmations",
+      omniauth_callbacks: "partners/omniauth_callbacks"
     }
 
   ####################
 
   ## users
   resources :users, only: [:create, :new]
-  get "/profile" => "users#show", :as => :profile
-  put "/profile" => "users#update", :as => :user
-  delete "/profile" => "users#delete", :as => :delete_user
+  get "/users/profile" => "users#show", :as => :profile
+  put "/users/profile" => "users#update", :as => :user
+  delete "/users/profile" => "users#delete", :as => :delete_user
   get "/users" => "users#new"
 
   ## Partners
@@ -104,6 +113,7 @@ Rails.application.routes.draw do
       end
     end
     resources :campaigns, only: [:show, :update]
+    resources :partner_external_accounts, only: [:destroy]
   end
 
   ## matches
