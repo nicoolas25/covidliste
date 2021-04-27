@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_05_04_200923) do
+ActiveRecord::Schema.define(version: 2021_05_06_053636) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -123,6 +123,7 @@ ActiveRecord::Schema.define(version: 2021_05_04_200923) do
     t.integer "status", default: 0
     t.datetime "canceled_at"
     t.string "algo_version"
+    t.jsonb "parameters"
     t.index ["partner_id"], name: "index_campaigns_on_partner_id"
     t.index ["status"], name: "index_campaigns_on_status"
     t.index ["vaccination_center_id"], name: "index_campaigns_on_vaccination_center_id"
@@ -255,8 +256,8 @@ ActiveRecord::Schema.define(version: 2021_05_04_200923) do
     t.string "city"
     t.string "geo_citycode"
     t.string "geo_context"
-    t.datetime "anonymized_at"
     t.boolean "statement", default: false
+    t.datetime "anonymized_at"
     t.datetime "statement_accepted_at"
     t.datetime "toc_accepted_at"
     t.string "email_domain"
@@ -301,6 +302,8 @@ ActiveRecord::Schema.define(version: 2021_05_04_200923) do
     t.string "geo_citycode"
     t.string "geo_context"
     t.datetime "confirmation_mail_sent_at"
+    t.datetime "visible_optin_at"
+    t.datetime "media_optin_at"
     t.index ["city"], name: "index_vaccination_centers_on_city"
     t.index ["confirmer_id"], name: "index_vaccination_centers_on_confirmer_id"
     t.index ["geo_citycode"], name: "index_vaccination_centers_on_geo_citycode"

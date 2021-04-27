@@ -19,6 +19,7 @@ class VaccinationCenter < ApplicationRecord
   validates :lat, :lon, presence: true, on: :validation_by_admin
   validates :kind, inclusion: {in: VaccinationCenter::Kinds::ALL}
   validates :address, postal_address: {with_zipcode: true}, on: :create
+  validates :media_optin, :visible_optin, acceptance: false
 
   has_many :partner_vaccination_centers
   has_many :partners, through: :partner_vaccination_centers
