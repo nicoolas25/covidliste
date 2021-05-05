@@ -121,10 +121,16 @@ bin/rails s
 ```
 
 If you need Sidekiq background workers or Webpacker development server, you can
-start them all using [`overmind`](https://github.com/DarthSim/overmind)
+start them all using [`overmind`](https://github.com/DarthSim/overmind):
 
 ```bash
 overmind s
+```
+
+or directly with:
+
+```bash
+bundle exec sidekiq -C config/sidekiq.yml
 ```
 
 ### Data seed
