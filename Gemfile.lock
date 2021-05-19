@@ -283,7 +283,6 @@ GEM
     pghero (2.8.1)
       activerecord (>= 5)
     phonelib (0.6.49)
-    popper_js (2.9.2)
     premailer (1.14.3)
       addressable
       css_parser (>= 1.6.0)
@@ -590,4 +589,4 @@ RUBY VERSION
    ruby 2.7.3p183
 
 BUNDLED WITH
-   2.2.16
+   2.2.17
